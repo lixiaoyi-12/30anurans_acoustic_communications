@@ -1,7 +1,7 @@
 library(ggplot2)
 
-hearing_file <- "~/Downloads/postdoc工作/1海南蛙类鸣声与ABR/听力数据/Rhacophorus_rhodopus_hearing.txt"
-call_file <- "~/Downloads/postdoc工作/1海南蛙类鸣声与ABR/鸣声数据/all/Rhacophorus_rhodopus/Rhacophorus_rhodopus_summary_average.txt"
+hearing_file <- "Rhacophorus_rhodopus_hearing.txt"
+call_file <- "Rhacophorus_rhodopus_summary_average.txt"
 
 x1 <- sub("\t+$", "", readLines(hearing_file))
 x2 <- sub("\t+$", "", readLines(call_file))
@@ -70,8 +70,6 @@ p <- ggplot() +
   geom_line(data = call_s, aes(frequency, y), color = "grey50", linewidth = 0.8) +
   geom_point(data = call_mean, aes(frequency, a*mean+b), color = "grey50", shape = 21, fill = "white", size = 2) +
   scale_x_continuous(limits = c(0.2, 8)) +
-  scale_y_reverse("ABR threshold (dB)", limits = c(left_max, left_min), sec.axis = sec_axis(~ (. - b)/a, name = "Relative Amplitude (dB)")) +
-  labs(x = "Frequency (kHz)") +
-  theme_classic(base_size = 14)
+  scale_y_reverse("ABR threshold (dB)", limits = c(left_max, left_min), sec.axis = sec_axis(~ (. - b)/a, name = "Relative Amplitude (dB)"))
 
 p
