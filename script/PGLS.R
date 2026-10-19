@@ -1,7 +1,7 @@
 library(nlme)
 
-tree <- read.tree("~/Downloads/postdoc工作/1海南蛙类鸣声与ABR/30物种树文件/tre30re.nwk")
-data <- read.csv("~/Downloads/postdoc工作/1海南蛙类鸣声与ABR/PGLS_matched_filter/pgls.csv", header = TRUE, row.names = 1)
+tree <- read.tree("tre30re.nwk")
+data <- read.csv("all.csv", header = TRUE, row.names = 1)
 clean_data <- na.omit(data[, c("best_frequency", "DF","high_frequency","Fmax")])
 
 valid_species <- rownames(clean_data)
@@ -24,12 +24,7 @@ get_pgls_line <- function(fit, x, panel) {newx <- seq(min(x), max(x), length.out
   V <- vcov(fit)
   fitted <- as.numeric(X %*% beta)
   se <- sqrt(diag(X %*% V %*% t(X)))
-  data.frame(
-    x = newx,
-    fit = fitted,
-    lower = fitted - 1.96 * se,
-    upper = fitted + 1.96 * se,
-    panel = panel)
+  data.frame(x = newx, fit = fitted, lower = fitted - 1.96 * se, upper = fitted + 1.96 * se, panel = panel)
 }
 
 plot_data <- rbind(
@@ -63,7 +58,5 @@ p <- ggplot(plot_data, aes(x = x, y = y)) +
   geom_line(data = line_data, aes(x = x, y = fit), inherit.aes = FALSE, linewidth = 0.9) +
   geom_point(size = 3, alpha = 0.85) +
   geom_text(data = label_data, aes(x = -Inf, y = Inf, label = label), inherit.aes = FALSE, hjust = -0.08, vjust = 1.15, size = 4) +
-  facet_wrap(~panel, nrow = 1, scales = "free") +
-  labs(x = expression(log[10]~"Call frequency (Hz)"), y = expression(log[10]~"Hearing frequency (Hz)")) +
-  theme_classic(base_size = 13)
+  facet_wrap(~panel, nrow = 1, scales = "free")
 
