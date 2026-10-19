@@ -1,7 +1,7 @@
 library(ggplot2)
 library(dplyr)
 
-dat <- read.csv("~/Downloads/postdoc工作/1海南蛙类鸣声与ABR/听力数据/听力数据汇总-6species.csv", na.strings = c("", "NA", "无"))
+dat <- read.csv("hearing_data_summary.csv", na.strings = c("", "NA", "无"))
 
 threshold_cols <- grep("^threshold_", names(dat), value = TRUE)
 
@@ -45,6 +45,5 @@ ggplot() +
   geom_ribbon(data = smooth_dat, aes(x = frequency, ymin = lower, ymax = upper), alpha = 0.2) +
   geom_line(data = smooth_dat, aes(x = frequency,y = mean),linewidth = 0.8) +
   geom_point(data = dat %>% filter(!is.na(mean_threshold)), aes(x = frequency, y = mean_threshold), size = 1.5) + 
-  facet_wrap(~ Species, axes = "all", axis.labels = "all", ncol = 4) + theme_bw() +
-  theme(strip.background = element_rect(fill = NA), strip.text = element_text(face = "italic"))
+  facet_wrap(~ Species, axes = "all", axis.labels = "all", ncol = 4) 
 
