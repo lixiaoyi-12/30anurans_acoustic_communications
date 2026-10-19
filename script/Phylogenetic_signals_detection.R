@@ -3,16 +3,14 @@ library(phytools)
 library(geiger)
 
 # Continuous traits
-tree <- read.tree("~/Downloads/postdoc工作/1海南蛙类鸣声与ABR/30物种树文件/tre30re.nwk")
+tree <- read.tree("tre30re.nwk")
 tree$root.edge <- NULL
 
 dat <- read.csv("all.csv")
 rownames(dat) <- dat$species
 dat$Relative_tympanum <- dat$Diameter_of_tympanum / dat$Body_length
 
-traits <- c("Body_length", "Head_length", "Head_width", "Diameter_of_tympanum",
-            "Relative_tympanum", "ABR_threshold", "best_frequency",
-            "high_frequency", "ND", "DF", "Fmax")
+traits <- c("Body_length", "Head_length", "Head_width", "Diameter_of_tympanum", "Relative_tympanum", "ABR_threshold", "best_frequency", "high_frequency", "ND", "DF", "Fmax")
 
 phylo_signal <- function(trait) {
   x <- dat[[trait]]; names(x) <- rownames(dat)
@@ -31,10 +29,8 @@ results$Lambda_FDR <- p.adjust(results$Lambda_P, method="BH")
 
 write.csv(results, "phylogenetic_signal_results.csv", row.names=FALSE)
 
-
 # Categorical traits
-
-dat <- read.csv("~/Downloads/postdoc工作/1海南蛙类鸣声与ABR/all_categorical_trait.csv")
+dat <- read.csv("all_categorical_trait.csv")
 rownames(dat) <- dat$species
 traits <- c("calling_site", "call_type", "size_sac")
 
